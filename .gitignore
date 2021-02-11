@@ -1,0 +1,3 @@
+#Archivos excluidos de git.
+composer.lock
+images/*
