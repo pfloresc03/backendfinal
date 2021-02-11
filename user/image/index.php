@@ -45,13 +45,20 @@ if ($metodo == "POST") {
 
       //Comprueba cual es la extensión del archivo.
       $ext = strpos($mime, "jpeg") ? ".jpg":".png";
-      $ruta = "../../images/p-".$idUser.$ext;
+      $nombreFoto = "p-".$idUser."-".time().$ext;
+      $ruta = "../../images/".$nombreFoto;
 
+      //Comprobamos que el usuario no tenga mas fotos de perfil subidas al servidor.
+      //En caso de que exista una imagen anterior la elimina.
+      $imgFind = "../../images/p-".$idUser."-*";
+      $imgFile = glob($imgFind);
+      foreach($imgFile as $fichero) unlink($fichero);
+      
       //Si se guarda la imagen correctamente actualiza la ruta en la tabla usuarios
       if(move_uploaded_file($rutaTemp,$ruta)) {
 
         //Prepara el contenido del campo imgSrc
-        $imgSRC = "http://localhost/backendPHP/images/p-".$idUser.$ext."?=".time();
+        $imgSRC = "http://localhost/backendPHP/images/".$nombreFoto;
 
         $eval = "UPDATE users SET imgSrc=? WHERE id=?";
         $peticion = $conexion->prepare($eval);

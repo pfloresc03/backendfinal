@@ -150,7 +150,7 @@ if($metodo != "OPTIONS") {
       if($idUser) {
         
         //Buscamos si el usuario tenía imagenes y la eliminamos.
-        $imgSrc = "../images/p-".$idUser.".*";
+        $imgSrc = "../images/p-".$idUser."-*";
         $imgFile = glob($imgSrc);
         foreach($imgFile as $fichero) unlink($fichero);
 
