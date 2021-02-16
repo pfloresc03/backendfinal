@@ -6,10 +6,11 @@ require "vendor/autoload.php";
 use \Firebase\JWT\JWT;
 
 //Guardamos la url para buscar el controlador y ponemos mensaje de bienvenida.
-$url = isset($_GET['url']) ? $_GET['url'] : "";
 if(!isset($_GET['url'])) {
   exit(json_encode(["Bienvenido al Backend con routes"]));
 }
+
+$url = $_GET['url'];
 
 //Preparamos la conexion con la base de datos
 $bd = new db();

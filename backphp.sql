@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `notas` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `idUser` int(10) UNSIGNED DEFAULT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
+  `idUser` int(11) UNSIGNED DEFAULT NULL,
   `titulo` varchar(255) NOT NULL,
   `contenido` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -41,7 +41,7 @@ CREATE TABLE `notas` (
 --
 
 CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `nombre` varchar(32) DEFAULT NULL,
   `apellidos` varchar(64) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -76,13 +76,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `notas`
 --
 ALTER TABLE `notas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas

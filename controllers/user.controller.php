@@ -113,7 +113,7 @@ class UserController {
         if(move_uploaded_file($rutaTemp,$ruta)) {
   
           //Prepara el contenido del campo imgSrc
-          $imgSRC = "http://localhost/backendPHP/images/".$nombreFoto;
+          $imgSRC = "http://localhost/backendphp/images/".$nombreFoto;
   
           $eval = "UPDATE users SET imgSrc=? WHERE id=?";
           $peticion = $this->db->prepare($eval);
@@ -239,7 +239,6 @@ class UserController {
       $imgSrc = ROOT."images/p-".IDUSER."-*";
       $imgFile = glob($imgSrc);
       foreach($imgFile as $fichero) unlink($fichero);
-      var_dump($imgSrc);
       $eval = "DELETE FROM users WHERE id=?";
       $peticion = $this->db->prepare($eval);
       $resultado = $peticion->execute([IDUSER]);
