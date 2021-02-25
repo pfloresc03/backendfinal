@@ -7,7 +7,7 @@ use \Firebase\JWT\JWT;
 
 //Guardamos la url para buscar el controlador y ponemos mensaje de bienvenida.
 if(!isset($_GET['url'])) {
-  exit(json_encode(["Bienvenido al Backend con routes"]));
+  exit(json_encode(["Bienvenido al Backendfinal con routes"]));
 }
 
 $url = $_GET['url'];
@@ -56,9 +56,6 @@ switch($control[0]) {
           case "login":
             $user->hacerLogin();
             break;
-          case "image":
-            $user->subirAvatar();
-            break;
           case "":
             $user->registrarUser();
         }
@@ -76,24 +73,24 @@ switch($control[0]) {
     }  
     break;
 
-  case "notas":
-    require_once("controllers/notas.controller.php");
-    $notas = new NotasController($conexion);
+  case "archivos":
+    require_once("controllers/partituras.controller.php");
+    $partituras = new PartiturasController($conexion);
     switch(METODO) {
       case "GET":
-        $notas->obtenerNotas();
+        $partituras->obtenerPartituras();
         break;
 
       case "POST":
-        $notas->publicarNota();
+        $partituras->subirArchivo();
         break;
 
       case "PUT":
-        $notas->editarNota();
+        $partituras->editarPartitura();
         break;
 
       case "DELETE":
-        $notas->eliminarNota($control[1]);
+        $partituras->eliminarPartitura($control[1]);
         break;
 
       default: exit(json_encode(["Bienvenido al Backend con routes"]));
