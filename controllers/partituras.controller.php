@@ -8,16 +8,16 @@ class PartiturasController {
     $this->db = $conexion;
   }
 
-  public function obtenerPartituras() {
+  public function obtenerPartituras($id_obra) {
     if (IDUSER){
       $busqueda = null;
       if(!empty($_GET["busqueda"])) $busqueda = $_GET["busqueda"];
 
-      $eval = "SELECT * FROM partituras";
+      $eval = "SELECT * FROM partituras WHERE id_obra=? ";
       $eval .= $busqueda ? " AND CONCAT_WS('', nombre) LIKE '%".$busqueda."%'" : null;
 
       $peticion = $this->db->prepare($eval);
-      $peticion->execute();
+      $peticion->execute([$id_obra]);
       $resultado = $peticion->fetchAll(PDO::FETCH_OBJ);
       exit(json_encode($resultado));
     } else{
@@ -81,7 +81,11 @@ class PartiturasController {
             
   }*/
 
-  public function subirArchivo() {
+  public function subirArchivo($id_obra) {
+    if(empty($id_obra)) {
+      http_response_code(500);
+      exit(json_encode(["error" => "id_obra vacio"]));
+    }
     if(is_null(IDUSER)){
       http_response_code(401);
       exit(json_encode(["error" => "Fallo de autorizacion"]));
@@ -109,9 +113,9 @@ class PartiturasController {
           //Prepara el contenido del campo imgSrc
           $archivo = "http://localhost/backendfinal/partituras/".$nombre;
   
-          $eval = "INSERT INTO partituras (archivo, nombre) VALUES (?,?)";
+          $eval = "INSERT INTO partituras (archivo, nombre, id_obra) VALUES (?,?,?)";
           $peticion = $this->db->prepare($eval);
-          $peticion->execute([$archivo,$nombre]);
+          $peticion->execute([$archivo,$nombre,$id_obra]);
   
           http_response_code(201);
           exit(json_encode("Partitura actualizada correctamente"));

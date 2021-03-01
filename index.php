@@ -78,11 +78,11 @@ switch($control[0]) {
     $partituras = new PartiturasController($conexion);
     switch(METODO) {
       case "GET":
-        $partituras->obtenerPartituras();
+        $partituras->obtenerPartituras($control[1]);
         break;
 
       case "POST":
-        $partituras->subirArchivo();
+        $partituras->subirArchivo($control[1]);
         break;
 
       case "PUT":
@@ -97,20 +97,20 @@ switch($control[0]) {
     }
     break;
 
-    case "mensajes":
-      require_once("controllers/mensajes.controller.php");
-      $mensajes = new MensajesController($conexion);
+    case "obras":
+      require_once("controllers/obras.controller.php");
+      $mensajes = new ObrasController($conexion);
       switch(METODO) {
         case "GET":
-          $mensajes->leerMensajes();
+          $mensajes->leerObras();
           break;
   
         case "POST":
-          $mensajes->enviarMensaje();
+          $mensajes->crearObra();
           break;
   
         case "DELETE":
-          $mensajes->eliminarMensaje($control[1]);
+          $mensajes->eliminarObra($control[1]);
           break;
   
         default: exit(json_encode(["Bienvenido al Backend con routes"]));

@@ -1,6 +1,6 @@
 <?php
 
-class MensajesController {
+class ObrasController {
 
   private $db = null;
 
@@ -8,11 +8,11 @@ class MensajesController {
     $this->db = $conexion;
   }
 
-  public function leerMensajes() {
+  public function leerObras() {
     if(IDUSER){
-      $eval = "SELECT * FROM mensajes WHERE idDestinatario=?";
+      $eval = "SELECT * FROM obras";
       $peticion = $this->db->prepare($eval);
-      $peticion->execute([IDUSER]);
+      $peticion->execute();
       $resultado = $peticion->fetchAll(PDO::FETCH_OBJ);
       exit(json_encode($resultado));
     } else {
@@ -22,18 +22,18 @@ class MensajesController {
     
   }
 
-  public function enviarMensaje(){
+  public function crearObra(){
     if (IDUSER){
-      $mensaje = json_decode(file_get_contents("php://input"));
-      if (!isset($mensaje->idDestinatario) || !isset($mensaje->mensaje)){
+      $obra = json_decode(file_get_contents("php://input"));
+      if (!isset($obra->nombre)){
         http_response_code(400);
         exit(json_encode(["error" => "No se han enviado todos los parametros"]));
       } 
-      $eval = "INSERT INTO mensajes(idRemitente, idDestinatario, mensaje) VALUES (?,?,?)";
+      $eval = "INSERT INTO obras(nombre) VALUES (?)";
       $peticion = $this->db->prepare($eval);
-      $peticion->execute([IDUSER, $mensaje->idDestinatario, $mensaje->mensaje]);
+      $peticion->execute([$obra->nombre]);
       http_response_code(201);
-      exit(json_encode("Mensaje creado correctamente"));
+      exit(json_encode("Obra creada correctamente"));
     } else {
       http_response_code(401);
       exit(json_encode(["error" => "Fallo de autorizacion"])); 
@@ -42,17 +42,17 @@ class MensajesController {
   
   
 
-  public function eliminarMensaje($id) {
+  public function eliminarObra($id) {
     if(empty($id)) {
       http_response_code(400);
       exit(json_encode(["error" => "Peticion mal formada"]));    
     }
     if(IDUSER) {
-      $eval = "DELETE FROM mensajes WHERE id=? AND idDestinatario=?";
+      $eval = "DELETE FROM obras WHERE id=? ";
       $peticion = $this->db->prepare($eval);
-      $resultado = $peticion->execute([$id,IDUSER]);
+      $resultado = $peticion->execute([$id]);
       http_response_code(200);
-      exit(json_encode("Mensaje eliminado correctamente"));
+      exit(json_encode("Obra eliminada correctamente"));
     } else {
       http_response_code(401);
       exit(json_encode(["error" => "Fallo de autorizacion"]));            
