@@ -10,11 +10,8 @@ class PartiturasController {
 
   public function obtenerPartituras($id_obra) {
     if (IDUSER){
-      $busqueda = null;
-      if(!empty($_GET["busqueda"])) $busqueda = $_GET["busqueda"];
 
       $eval = "SELECT * FROM partituras WHERE id_obra=? ";
-      $eval .= $busqueda ? " AND CONCAT_WS('', nombre) LIKE '%".$busqueda."%'" : null;
 
       $peticion = $this->db->prepare($eval);
       $peticion->execute([$id_obra]);

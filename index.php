@@ -117,6 +117,25 @@ switch($control[0]) {
       }
       break;
   
+      case "videos":
+        require_once("controllers/videos.controller.php");
+        $mensajes = new VideosController($conexion);
+        switch(METODO) {
+          case "GET":
+            $mensajes->obtenerVideos();
+            break;
+    
+          case "POST":
+            $mensajes->publicarVideo();
+            break;
+    
+          case "DELETE":
+            $mensajes->eliminarVideo($control[1]);
+            break;
+    
+          default: exit(json_encode(["Bienvenido al Backend con routes"]));
+        }
+        break;
 
     default:
     exit(json_encode(["Bienvenido al Backend con routes"]));
