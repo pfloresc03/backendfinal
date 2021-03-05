@@ -129,6 +129,10 @@ switch($control[0]) {
             $mensajes->publicarVideo();
             break;
     
+          case "PUT":
+            $mensajes->editarVideo();
+            break;
+            
           case "DELETE":
             $mensajes->eliminarVideo($control[1]);
             break;

@@ -56,17 +56,17 @@ class VideosController {
   }
 
   public function editarVideo() {
-    $nota = json_decode(file_get_contents("php://input"));
+    $video = json_decode(file_get_contents("php://input"));
     if(IDUSER) {
-      if(!isset($nota->id) || !isset($nota->titulo) || !isset($nota->contenido)) {
+      if(!isset($video->id) || !isset($video->titulo) || !isset($video->enlace)) {
         http_response_code(400);
         exit(json_encode(["error" => "No se han enviado todos los parametros"]));
       }
-      $eval = "UPDATE notas SET titulo=?, contenido=? WHERE id=? AND idUser=?";
+      $eval = "UPDATE videoteca SET titulo=?, enlace=? WHERE id=?";
       $peticion = $this->db->prepare($eval);
-      $resultado = $peticion->execute([$nota->titulo,$nota->contenido,$nota->id,IDUSER]);
+      $resultado = $peticion->execute([$video->titulo,$video->enlace,$video->id]);
       http_response_code(201);
-      exit(json_encode("Nota actualizada correctamente"));
+      exit(json_encode("Video actualizado correctamente"));
     } else {
       http_response_code(401);
       exit(json_encode(["error" => "Fallo de autorizacion"]));        
