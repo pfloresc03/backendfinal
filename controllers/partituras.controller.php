@@ -23,60 +23,6 @@ class PartiturasController {
     }
     
   }
-  
-  /*public function publicarPartitura() {
-    $partitura = json_decode(file_get_contents("php://input"));
-
-    if(!isset($partitura->nombre) || !isset($partitura->id_instrumento)) {
-    http_response_code(400);
-    exit(json_encode(["error" => "No se han enviado todos los parametros"]));
-    }
-
-    $peticion = $this->db->prepare("INSERT INTO partituras (nombre,id_intrumento) VALUES (?,?)");
-    $resultado = $peticion->execute([$partitura->nombre,$partitura->id_instrumento]);
-    //http_response_code(201);
-    //exit(json_encode("partitura creada correctamente"));
-    $last_id = $peticion->insert_id;
-    if(isset($_FILES['partitura'])) {
-      $partitura = $_FILES['partitura'];
-      $mime = $partitura['type'];
-      $size = $partitura['size'];
-      $rutaTemp = $partitura['tmp_name'];
-  
-      //Comprobamos que la partitura sea JPEG o PNG y que el tamaño sea menor que 4000KB.
-      if( !(strpos($mime, "pdf")) || ($size > 4000000) ) {
-        http_response_code(400);
-        exit(json_encode(["error" => "La partitura tiene que ser PDF y no puede ocupar mas de 4MB"]));
-      } else {
-  
-        //Comprueba cual es la extensión del archivo.
-        $ext = strpos($mime, "pdf");
-        $nombreFoto = "p-".IDUSER."-".time().$ext;
-        $ruta = ROOT."archivos/".$nombreFoto;
-        
-        //Si se guarda la partitura correctamente actualiza la ruta en la tabla usuarios
-        if(move_uploaded_file($rutaTemp,$ruta)) {
-  
-          //Prepara el contenido del campo imgSrc
-          $archivo = "http://localhost/backendfinal/partituras/".$nombreFoto;
-  
-          $eval = "UPDATE partituras SET archivo=? WHERE id=?";
-          $peticion = $this->db->prepare($eval);
-          $peticion->execute([$archivo,$last_id]);
-  
-          http_response_code(201);
-          exit(json_encode("Partitura actualizada correctamente"));
-        } else {
-          http_response_code(500);
-          exit(json_encode(["error" => "Ha habido un error con la subida"]));      
-        }
-      }
-    }  else {
-      http_response_code(400);
-      exit(json_encode(["error" => "No se han enviado todos los parametros"]));
-    }
-            
-  }*/
 
   public function subirArchivo($id_obra) {
     if(empty($id_obra)) {
@@ -151,9 +97,18 @@ class PartiturasController {
       exit(json_encode(["error" => "Peticion mal formada"]));    
     }
     if(IDUSER) {
-      $eval = "DELETE FROM partituras WHERE id=? AND idUser=?";
+      /*$borra = "SELECT archivo WHERE id=?";
+      $peticion = $this->db->prepare($borra);
+      $peticion->execute([$id]);
+      $resultado = $peticion->fetchObject();
+      $nombre = substr($resultado, strrpos($resultado,"/",-1));
+      $ruta = ROOT."partituras".$nombre;
+      unlink($nombre);
+      exit(json_encode($nombre));*/
+      $eval = "DELETE FROM partituras WHERE id=?";
       $peticion = $this->db->prepare($eval);
-      $resultado = $peticion->execute([$id,IDUSER]);
+      $resultado = $peticion->execute([$id]);
+
       http_response_code(200);
       exit(json_encode("Partitura eliminada correctamente"));
     } else {

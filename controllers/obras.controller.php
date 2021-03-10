@@ -29,9 +29,9 @@ class ObrasController {
         http_response_code(400);
         exit(json_encode(["error" => "No se han enviado todos los parametros"]));
       } 
-      $eval = "INSERT INTO obras(nombre) VALUES (?)";
+      $eval = "INSERT INTO obras(nombre, autor) VALUES (?,?)";
       $peticion = $this->db->prepare($eval);
-      $peticion->execute([$obra->nombre]);
+      $peticion->execute([$obra->nombre,$obra->autor]);
       http_response_code(201);
       exit(json_encode("Obra creada correctamente"));
     } else {
@@ -40,7 +40,23 @@ class ObrasController {
     }
   }
   
-  
+  public function editarObra() {
+    $obra = json_decode(file_get_contents("php://input"));
+    if(IDUSER) {
+      if(!isset($obra->id) || !isset($obra->nombre) || !isset($obra->autor)) {
+        http_response_code(400);
+        exit(json_encode(["error" => "No se han enviado todos los parametros"]));
+      }
+      $eval = "UPDATE obras SET nombre=?, autor=? WHERE id=?";
+      $peticion = $this->db->prepare($eval);
+      $resultado = $peticion->execute([$obra->nombre,$obra->autor,$obra->id]);
+      http_response_code(201);
+      exit(json_encode("Obra actualizada correctamente"));
+    } else {
+      http_response_code(401);
+      exit(json_encode(["error" => "Fallo de autorizacion"]));        
+    }
+  }
 
   public function eliminarObra($id) {
     if(empty($id)) {
@@ -51,6 +67,7 @@ class ObrasController {
       $eval = "DELETE FROM obras WHERE id=? ";
       $peticion = $this->db->prepare($eval);
       $resultado = $peticion->execute([$id]);
+
       http_response_code(200);
       exit(json_encode("Obra eliminada correctamente"));
     } else {

@@ -109,6 +109,10 @@ switch($control[0]) {
           $mensajes->crearObra();
           break;
   
+        case "PUT":
+          $mensajes->editarObra();
+          break;
+
         case "DELETE":
           $mensajes->eliminarObra($control[1]);
           break;
