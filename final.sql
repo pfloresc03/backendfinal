@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-03-2021 a las 12:47:27
+-- Tiempo de generación: 11-03-2021 a las 12:37:06
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.10
 
@@ -41,7 +41,7 @@ CREATE TABLE `obras` (
 
 INSERT INTO `obras` (`id`, `nombre`, `autor`) VALUES
 (1, 'Ferling', 'señor ferling'),
-(2, 'Prueba', 'prueba');
+(2, 'Prueba', 'Anónimo');
 
 -- --------------------------------------------------------
 
@@ -93,6 +93,7 @@ INSERT INTO `users` (`id`, `nombre`, `apellidos`, `email`, `password`) VALUES
 CREATE TABLE `videoteca` (
   `id` int(11) NOT NULL,
   `titulo` varchar(100) NOT NULL,
+  `autor` varchar(100) NOT NULL,
   `enlace` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -100,11 +101,11 @@ CREATE TABLE `videoteca` (
 -- Volcado de datos para la tabla `videoteca`
 --
 
-INSERT INTO `videoteca` (`id`, `titulo`, `enlace`) VALUES
-(3, 'El colibrí', 'https://www.youtube.com/embed/veO2ooRTsKU'),
-(4, 'Manual del perfecte inoportú', 'https://www.youtube.com/embed/br2h74Ymcq0'),
-(5, 'Lluna Mediterránea', 'https://www.youtube.com/embed/eSJKm8WrU68'),
-(6, 'Libertadores', 'https://www.youtube.com/embed/dTbSU5362mk');
+INSERT INTO `videoteca` (`id`, `titulo`, `autor`, `enlace`) VALUES
+(3, 'El colibrí', 'Anónimo', 'https://www.youtube.com/embed/veO2ooRTsKU'),
+(4, 'Manual del perfecte inoportú', 'Joaquim Cano', 'https://www.youtube.com/embed/br2h74Ymcq0'),
+(5, 'Lluna Mediterránea', 'Teodoro Aparicio', 'https://www.youtube.com/embed/eSJKm8WrU68'),
+(6, 'Libertadores', 'Óscar Navarro', 'https://www.youtube.com/embed/dTbSU5362mk');
 
 --
 -- Índices para tablas volcadas

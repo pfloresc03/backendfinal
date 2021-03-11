@@ -27,8 +27,8 @@ class VideosController {
         exit(json_encode(["error" => "No se han enviado todos los parametros"]));
       }
   
-      $peticion = $this->db->prepare("INSERT INTO videoteca (titulo,enlace) VALUES (?,?)");
-      $resultado = $peticion->execute([$video->titulo,$video->enlace]);
+      $peticion = $this->db->prepare("INSERT INTO videoteca (titulo,autor,enlace) VALUES (?,?)");
+      $resultado = $peticion->execute([$video->titulo,$video->autor,$video->enlace]);
       http_response_code(201);
       exit(json_encode("Video añadido correctamente"));
     } else {
@@ -62,9 +62,9 @@ class VideosController {
         http_response_code(400);
         exit(json_encode(["error" => "No se han enviado todos los parametros"]));
       }
-      $eval = "UPDATE videoteca SET titulo=?, enlace=? WHERE id=?";
+      $eval = "UPDATE videoteca SET titulo=?,autor=?, enlace=? WHERE id=?";
       $peticion = $this->db->prepare($eval);
-      $resultado = $peticion->execute([$video->titulo,$video->enlace,$video->id]);
+      $resultado = $peticion->execute([$video->titulo,$video->autor,$video->enlace,$video->id]);
       http_response_code(201);
       exit(json_encode("Video actualizado correctamente"));
     } else {
