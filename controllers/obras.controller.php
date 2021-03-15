@@ -64,6 +64,15 @@ class ObrasController {
       exit(json_encode(["error" => "Peticion mal formada"]));    
     }
     if(IDUSER) {
+      $borra = "SELECT nombre FROM partituras WHERE id_obra=?";
+      $peticion = $this->db->prepare($borra);
+      $peticion->execute([$id]);
+      $resultado = $peticion->fetchAll(PDO::FETCH_COLUMN);
+      foreach ($resultado as $partitura){
+        $ruta = ROOT."partituras/".$partitura;
+        unlink($ruta);
+      } 
+      
       $eval = "DELETE FROM obras WHERE id=? ";
       $peticion = $this->db->prepare($eval);
       $resultado = $peticion->execute([$id]);

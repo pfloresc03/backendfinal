@@ -61,7 +61,7 @@ class PartiturasController {
           $peticion->execute([$archivo,$nombre,$id_obra]);
   
           http_response_code(201);
-          exit(json_encode("Partitura actualizada correctamente"));
+          exit(json_encode("Partitura subida correctamente"));
         } else {
           http_response_code(500);
           exit(json_encode(["error" => "Ha habido un error con la subida"]));      
@@ -97,14 +97,14 @@ class PartiturasController {
       exit(json_encode(["error" => "Peticion mal formada"]));    
     }
     if(IDUSER) {
-      /*$borra = "SELECT archivo WHERE id=?";
+      $borra = "SELECT nombre FROM partituras WHERE id=?";
       $peticion = $this->db->prepare($borra);
       $peticion->execute([$id]);
-      $resultado = $peticion->fetchObject();
-      $nombre = substr($resultado, strrpos($resultado,"/",-1));
-      $ruta = ROOT."partituras".$nombre;
-      unlink($nombre);
-      exit(json_encode($nombre));*/
+      $resultado = $peticion->fetch();
+      
+      $ruta = ROOT."partituras/".$resultado[0];
+      unlink($ruta);
+
       $eval = "DELETE FROM partituras WHERE id=?";
       $peticion = $this->db->prepare($eval);
       $resultado = $peticion->execute([$id]);
