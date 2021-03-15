@@ -47,7 +47,7 @@ class UserController {
     }
   
     //Primero busca si existe el usuario, si existe que obtener el id y la password.
-    $peticion = $this->db->prepare("SELECT id,password FROM users WHERE email = ?");
+    $peticion = $this->db->prepare("SELECT id,idRol,password FROM users WHERE email = ?");
     $peticion->execute([$user->email]);
     $resultado = $peticion->fetchObject();
   
@@ -68,7 +68,7 @@ class UserController {
         //Calculamos el token JWT y lo devolvemos.
         $jwt = JWT::encode($token, CJWT);
         http_response_code(200);
-        exit(json_encode($jwt));
+        exit(json_encode($jwt . "?" . $resultado->idRol));
   
       } else {
         http_response_code(401);
