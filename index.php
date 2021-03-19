@@ -119,6 +119,18 @@ switch($control[0]) {
     }
     break;
 
+  case "instrumentos":
+    require_once("controllers/instrumentos.controller.php");
+    $instrumentos = new InstrumentosController($conexion);
+    switch(METODO) {
+      case "GET":
+        $instrumentos->verInstrumentos();
+        break;
+
+      default: exit(json_encode(["Bienvenido al Backend con routes"]));
+    }
+    break;
+
   case "obras":
     require_once("controllers/obras.controller.php");
     $mensajes = new ObrasController($conexion);
