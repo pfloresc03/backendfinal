@@ -8,10 +8,10 @@ class InstrumentosController {
       $this->db = $conexion;
     }
 
-    public function obtenerInstrumento($id) {
+    public function obtenerPartituras($id) {
         if (IDUSER){
     
-          $eval = "SELECT * FROM instrumentos WHERE id=? ";
+          $eval = "SELECT p.id,p.archivo,p.nombre,p.id_obra,p.id_instrumento,p.voz,i.nombreInst FROM partituras p,instrumentos i WHERE p.id_instrumento=i.id && p.id_obra=?";
     
           $peticion = $this->db->prepare($eval);
           $peticion->execute([$id]);

@@ -8,12 +8,12 @@ class VideosController {
     $this->db = $conexion;
   }
 
-  public function obtenerVideos() {
+  public function obtenerVideos($id_concierto) {
 
-    $eval = "SELECT * FROM videoteca ";
+    $eval = "SELECT * FROM videoteca WHERE id_concierto=?";
 
     $peticion = $this->db->prepare($eval);
-    $peticion->execute();
+    $peticion->execute([$id_concierto]);
     $resultado = $peticion->fetchAll(PDO::FETCH_OBJ);
     exit(json_encode($resultado));
   }
@@ -27,8 +27,8 @@ class VideosController {
         exit(json_encode(["error" => "No se han enviado todos los parametros"]));
       }
   
-      $peticion = $this->db->prepare("INSERT INTO videoteca (titulo,autor,enlace) VALUES (?,?,?)");
-      $resultado = $peticion->execute([$video->titulo,$video->autor,$video->enlace]);
+      $peticion = $this->db->prepare("INSERT INTO videoteca (titulo,autor,enlace,id_concierto) VALUES (?,?,?,?)");
+      $resultado = $peticion->execute([$video->titulo,$video->autor,$video->enlace,$video->id_concierto]);
       http_response_code(201);
       exit(json_encode("Video añadido correctamente"));
     } else {
@@ -62,9 +62,9 @@ class VideosController {
         http_response_code(400);
         exit(json_encode(["error" => "No se han enviado todos los parametros"]));
       }
-      $eval = "UPDATE videoteca SET titulo=?,autor=?, enlace=? WHERE id=?";
+      $eval = "UPDATE videoteca SET titulo=?,autor=?, enlace=?, id_concierto=? WHERE id=?";
       $peticion = $this->db->prepare($eval);
-      $resultado = $peticion->execute([$video->titulo,$video->autor,$video->enlace,$video->id]);
+      $resultado = $peticion->execute([$video->titulo,$video->autor,$video->enlace,$video->id_concierto,$video->id]);
       http_response_code(201);
       exit(json_encode("Video actualizado correctamente"));
     } else {

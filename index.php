@@ -104,7 +104,7 @@ switch($control[0]) {
         break;
 
       case "POST":
-        $partituras->subirArchivo($control[1]);
+        $partituras->subirArchivo($control[1],$control[2],$control[3]);
         break;
 
       case "PUT":
@@ -124,7 +124,10 @@ switch($control[0]) {
     $instrumentos = new InstrumentosController($conexion);
     switch(METODO) {
       case "GET":
-        $instrumentos->verInstrumentos();
+        if(isset($control[1]) && $control[1]== "ver")
+          $instrumentos->verInstrumentos();
+        else
+          $instrumentos->obtenerPartituras($control[1]);
         break;
 
       default: exit(json_encode(["Bienvenido al Backend con routes"]));
@@ -155,12 +158,35 @@ switch($control[0]) {
     }
     break;
 
+  case "conciertos":
+    require_once("controllers/conciertos.controller.php");
+    $conciertos = new ConciertosController($conexion);
+    switch(METODO) {
+      case "GET":
+        $conciertos->verConciertos();
+        break;
+
+      case "POST":
+        $conciertos->crearConcierto();
+        break;
+
+      case "PUT":
+        $conciertos->editarConcierto();
+        break;
+
+      case "DELETE":
+        $conciertos->eliminarConcierto($control[1]);
+        break;
+
+      default: exit(json_encode(["Bienvenido al Backend con routes"]));
+    }
+    break;
   case "videos":
     require_once("controllers/videos.controller.php");
     $mensajes = new VideosController($conexion);
     switch(METODO) {
       case "GET":
-        $mensajes->obtenerVideos();
+        $mensajes->obtenerVideos($control[1]);
         break;
 
       case "POST":

@@ -24,7 +24,7 @@ class PartiturasController {
     
   }
 
-  public function subirArchivo($id_obra) {
+  public function subirArchivo($id_obra, $id_inst, $voz) {
     if(empty($id_obra)) {
       http_response_code(500);
       exit(json_encode(["error" => "id_obra vacio"]));
@@ -56,9 +56,9 @@ class PartiturasController {
           //Prepara el contenido del campo imgSrc
           $archivo = "http://localhost/backendfinal/partituras/".$nombre;
   
-          $eval = "INSERT INTO partituras (archivo, nombre, id_obra) VALUES (?,?,?)";
+          $eval = "INSERT INTO partituras (archivo, nombre, id_obra, id_instrumento, voz) VALUES (?,?,?,?,?)";
           $peticion = $this->db->prepare($eval);
-          $peticion->execute([$archivo,$nombre,$id_obra]);
+          $peticion->execute([$archivo,$nombre,$id_obra,$id_inst,$voz]);
   
           http_response_code(201);
           exit(json_encode("Partitura subida correctamente"));
@@ -76,13 +76,13 @@ class PartiturasController {
   public function editarPartitura() {
     $partitura = json_decode(file_get_contents("php://input"));
     if(IDUSER) {
-      if(!isset($partitura->id) || !isset($partitura->titulo) || !isset($partitura->contenido)) {
+      if(!isset($partitura->id_partitura) || !isset($partitura->id_instrumento) || !isset($partitura->id_voz)) {
         http_response_code(400);
         exit(json_encode(["error" => "No se han enviado todos los parametros"]));
       }
-      $eval = "UPDATE partituras SET titulo=?, contenido=? WHERE id=? AND idUser=?";
+      $eval = "UPDATE partituras SET id_instrumento=?, voz=? WHERE id=? ";
       $peticion = $this->db->prepare($eval);
-      $resultado = $peticion->execute([$partitura->titulo,$partitura->contenido,$partitura->id,IDUSER]);
+      $resultado = $peticion->execute([$partitura->id_instrumento,$partitura->id_voz,$partitura->id_partitura]);
       http_response_code(201);
       exit(json_encode("Partitura actualizada correctamente"));
     } else {
